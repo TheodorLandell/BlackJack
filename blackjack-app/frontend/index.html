@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackjack</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Camera panel — live YOLO detection (9b) -->
+  <div id="cameraPanel">
+    <div class="camera-stage">
+      <video id="cameraVideo" autoplay muted playsinline></video>
+      <canvas id="overlayCanvas"></canvas>
+    </div>
+    <div id="cameraControls">
+      <button id="cameraToggle">Start camera</button>
+    </div>
+    <div id="modeToggle">
+      <button id="modeBtn" class="digital-mode">Digital mode</button>
+    </div>
+    <div id="manualFeedSection" hidden>
+      <input id="manualFeedInput" type="text" placeholder="e.g. a-h, 10-s, back" />
+      <button id="manualFeedBtn">Feed</button>
+    </div>
+    <div id="cameraDebugInfo">
+      <span id="cameraFps">—</span> ·
+      <span id="cameraInference">—</span> ·
+      <span id="cameraDetCount">—</span>
+    </div>
+  </div>
+
+  <canvas id="captureCanvas" hidden></canvas>
+
+  <main id="tableFrame">
+    <div id="tableFelt">
+
+      <!-- Dealer rack (decorative) -->
+      <div id="dealerRack">
+        <div class="rack-stack rack-10"></div>
+        <div class="rack-stack rack-25"></div>
+        <div class="rack-stack rack-50"></div>
+        <div class="rack-stack rack-100"></div>
+        <div class="rack-stack rack-250"></div>
+      </div>
+
+      <!-- Dealer area -->
+      <div id="dealerArea">
+        <div class="area-label">
+          Dealer
+          <span id="dealerValue" class="value-badge hidden"></span>
+        </div>
+        <div id="dealerCards"></div>
+        <div class="deck-stack">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- Status banner -->
+      <div id="statusBanner">Click "Ny rond" to start</div>
+
+      <!-- Player area -->
+      <div id="playerArea">
+        <div class="area-label">
+          Player
+          <span id="playerValue" class="value-badge hidden"></span>
+        </div>
+        <div id="playerCards"></div>
+      </div>
+
+      <!-- Bet area -->
+      <div id="betArea">
+        <div id="betCircle">
+          <div id="chipStack"></div>
+        </div>
+        <div id="betAmountLabel" hidden>
+          <span id="betAmountDisplay">0</span>&thinsp;markers
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Action buttons (outside the table) -->
+  <div id="actionButtons">
+    <button id="newRound"
+      class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white text-sm font-medium transition-colors">
+      Ny rond
+    </button>
+    <button id="actionHit" disabled
+      class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 rounded-lg text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+      Hit
+    </button>
+    <button id="actionStand" disabled
+      class="px-5 py-2.5 bg-rose-700 hover:bg-rose-600 rounded-lg text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+      Stand
+    </button>
+    <button id="actionDouble" disabled
+      class="px-5 py-2.5 bg-indigo-700 hover:bg-indigo-600 rounded-lg text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+      Double down
+    </button>
+  </div>
+
+  <!-- Chip selector (outside the table) -->
+  <div id="chipSection">
+    <div id="chipSelector">
+      <button class="chip chip-10" data-value="10"><span>10</span></button>
+      <button class="chip chip-25" data-value="25"><span>25</span></button>
+      <button class="chip chip-50" data-value="50"><span>50</span></button>
+      <button class="chip chip-100" data-value="100"><span>100</span></button>
+      <button class="chip chip-250" data-value="250"><span>250</span></button>
+    </div>
+    <div class="chip-controls">
+      <button id="undoBetBtn" disabled>Undo</button>
+      <button id="clearBetBtn">Clear</button>
+    </div>
+  </div>
+
+  <!-- Wallet panel — saldo och titel längst ner -->
+  <div id="walletPanel">
+    <span id="walletTitle">Blackjack</span>
+    <span class="wallet-label">Saldo</span>
+    <span id="saldoValue">1000</span>
+    <span class="wallet-unit">markers</span>
+  </div>
+
+  <!-- Reset-knapp — visas endast när saldo är 0 -->
+  <button id="resetBtn" hidden>Reset saldo</button>
+
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/camera.js"></script>
+</body>
+</html>
