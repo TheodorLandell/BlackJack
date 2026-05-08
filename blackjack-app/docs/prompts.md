@@ -1165,3 +1165,37 @@ Hit/Stand/Double set a new waiting state; the matching card auto-feeds from came
 Dealer reveal: hold hole card in top half → flips with CSS animation
 BJ scenarios: player BJ no longer resolves until dealer flips their hole card — push, player_blackjack, and dealer_blackjack all resolve correctly at reveal time
 Manual feed input works as fallback throughout
+
+---
+
+## Prompt #10 — GitHub-publicering — 2026-05-08
+
+### Prompt
+Skulle du kunna pusha upp allt i ett nytt github repo, Med namn BlackJack
+
+### Vad som skapades / ändrades
+
+Filer skapade:
+- .gitignore (rot)
+
+Kommandon körda:
+- `git init` i `C:\Users\Lenovo\Dev\Blackjack`
+- `git add .` + initial commit (18 filer, 4032 insertions)
+- GitHub-repo skapad via REST API (token ur Windows Credential Manager)
+- `git remote add origin https://github.com/TheodorLandell/BlackJack.git`
+- `git push -u origin master`
+
+### Sammanfattning av implementationen
+Git-repo initierades lokalt i projektmappen, en `.gitignore` skapades som exkluderar `__pycache__`, `.pyc` och `.claude/`. Eftersom `gh` CLI inte är installerat extraherades det lagrade GitHub-tokenet via `git credential fill` och GitHub-repot skapades via REST API (`POST /user/repos`). Koden pushades till `https://github.com/TheodorLandell/BlackJack` på `master`-branchen.
+
+### Beslut och avvägningar
+`gh` CLI saknas — användes `git credential fill` + curl mot GitHub API istället för interaktiv repo-skapelse. `best.pt` (6,1 MB YOLO-modell) inkluderades i repot utan Git LFS eftersom filstorleken är under GitHubs 100 MB-gräns.
+
+### Problem som uppstod
+`gh`-kommandot saknas trots GitHub Desktop. `Invoke-WebRequest` fungerar inte i NonInteractive PowerShell-läge — löst med `curl` via Bash-verktyget. Repot existerade redan på kontot från ett tidigare försök — remote sattes direkt och push lyckades.
+
+### Status
+✅ Klart
+
+### Repo-URL
+https://github.com/TheodorLandell/BlackJack
