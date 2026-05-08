@@ -807,46 +807,30 @@ document.getElementById("resetBtn").addEventListener("click", async () => {
 // ---------------------------------------------------------------------------
 
 function applyModeUI() {
-  const btn         = document.getElementById("modeBtn");
-  const feedSection = document.getElementById("manualFeedSection");
+  const btn   = document.getElementById("modeBtn");
+  const panel = document.getElementById("cameraPanel");
   window.gameState.currentMode = currentMode;
   if (currentMode === "camera") {
-    btn.textContent = "Camera mode";
+    btn.textContent = "Camera";
     btn.classList.remove("digital-mode");
-    feedSection.removeAttribute("hidden");
+    panel.classList.add("camera-mode");
   } else {
-    btn.textContent = "Digital mode";
+    btn.textContent = "Digital";
     btn.classList.add("digital-mode");
-    feedSection.setAttribute("hidden", "");
+    panel.classList.remove("camera-mode");
   }
 }
 
 document.getElementById("modeBtn").addEventListener("click", () => {
-  currentMode = currentMode === "digital" ? "camera" : "digital";
-  applyModeUI();
-});
-
-// ---------------------------------------------------------------------------
-// Manuell kortmatning (kameraläge)
-// ---------------------------------------------------------------------------
-
-document.getElementById("manualFeedBtn").addEventListener("click", async () => {
-  const input    = document.getElementById("manualFeedInput");
-  const cardCode = input.value.trim();
-  if (!cardCode) return;
-  input.value = "";
-  window.gameState.consumedClasses.add(cardCode);
-  await postAction(
-    "http://localhost:5000/api/round/feed_card",
-    {
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ card_code: cardCode }),
-    }
-  );
-});
-
-document.getElementById("manualFeedInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") document.getElementById("manualFeedBtn").click();
+  if (currentMode === "digital") {
+    currentMode = "camera";
+    applyModeUI();
+    window.startCamera && window.startCamera();
+  } else {
+    window.stopCamera && window.stopCamera();
+    currentMode = "digital";
+    applyModeUI();
+  }
 });
 
 // ---------------------------------------------------------------------------

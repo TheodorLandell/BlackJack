@@ -8,7 +8,6 @@ let frameTimes          = [];
 const videoEl       = document.getElementById("cameraVideo");
 const overlayCanvas = document.getElementById("overlayCanvas");
 const captureCanvas = document.getElementById("captureCanvas");
-const toggleBtn     = document.getElementById("cameraToggle");
 const fpsEl         = document.getElementById("cameraFps");
 const inferenceEl   = document.getElementById("cameraInference");
 const detCountEl    = document.getElementById("cameraDetCount");
@@ -39,7 +38,6 @@ async function startCamera() {
       captureCanvas.height = h;
     }, { once: true });
     isRunning = true;
-    toggleBtn.textContent = "Stop camera";
     frameLoop();
   } catch (err) {
     const msg = err.name === "NotAllowedError" ? "Permission denied" : "Camera not available";
@@ -55,7 +53,6 @@ function stopCamera() {
   }
   videoEl.srcObject = null;
   overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-  toggleBtn.textContent = "Start camera";
   frameTimes = [];
   fpsEl.textContent       = "—";
   inferenceEl.textContent = "—";
@@ -293,9 +290,8 @@ function setDebugError(msg) {
 }
 
 // ---------------------------------------------------------------------------
-// Toggle
+// Expose to api.js
 // ---------------------------------------------------------------------------
 
-toggleBtn.addEventListener("click", () => {
-  if (isRunning) stopCamera(); else startCamera();
-});
+window.startCamera = startCamera;
+window.stopCamera  = stopCamera;

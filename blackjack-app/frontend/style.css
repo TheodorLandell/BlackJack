@@ -644,15 +644,33 @@ body {
   position: fixed;
   top: 20px;
   left: 20px;
-  width: 260px;
+  width: 220px;
   z-index: 500;
   display: flex;
   flex-direction: column;
-  gap: 6px;
   background: rgba(0, 0, 0, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: 8px;
+  transition: width 280ms ease;
+}
+
+#cameraPanel.camera-mode {
+  width: 360px;
+}
+
+#cameraSection {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition: max-height 280ms ease, opacity 220ms ease, margin-top 280ms ease;
+}
+
+#cameraPanel.camera-mode #cameraSection {
+  max-height: 320px;
+  opacity: 1;
+  margin-top: 8px;
 }
 
 .camera-stage {
@@ -680,32 +698,22 @@ body {
   pointer-events: none;
 }
 
-#cameraControls {
-  display: flex;
-}
-
-#cameraToggle {
-  width: 100%;
-  padding: 5px 10px;
-  font-size: 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  color: rgba(255, 255, 255, 0.75);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-#cameraToggle:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
 #modeToggle {
   display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mode-toggle-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 #modeBtn {
-  width: 100%;
+  flex: 1;
   padding: 5px 10px;
   font-size: 0.75rem;
   background: rgba(74, 222, 128, 0.12);
@@ -730,48 +738,13 @@ body {
   background: rgba(255, 255, 255, 0.15);
 }
 
-#manualFeedSection {
-  display: flex;
-  gap: 4px;
-}
-
-#manualFeedInput {
-  flex: 1;
-  padding: 4px 8px;
-  font-size: 0.7rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  color: rgba(255, 255, 255, 0.8);
-  min-width: 0;
-}
-
-#manualFeedInput::placeholder {
-  color: rgba(255, 255, 255, 0.3);
-}
-
-#manualFeedBtn {
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  color: rgba(255, 255, 255, 0.75);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
-
-#manualFeedBtn:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
 #cameraDebugInfo {
   font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.4);
   letter-spacing: 0.02em;
   text-align: center;
   min-height: 1em;
+  margin-top: 6px;
 }
 
 /* ===== BET CIRCLE PULSE ===== */

@@ -11,24 +11,20 @@
 
   <!-- Camera panel — live YOLO detection (9b) -->
   <div id="cameraPanel">
-    <div class="camera-stage">
-      <video id="cameraVideo" autoplay muted playsinline></video>
-      <canvas id="overlayCanvas"></canvas>
-    </div>
-    <div id="cameraControls">
-      <button id="cameraToggle">Start camera</button>
-    </div>
     <div id="modeToggle">
-      <button id="modeBtn" class="digital-mode">Digital mode</button>
+      <span class="mode-toggle-label">Mode:</span>
+      <button id="modeBtn" class="digital-mode">Digital</button>
     </div>
-    <div id="manualFeedSection" hidden>
-      <input id="manualFeedInput" type="text" placeholder="e.g. a-h, 10-s, back" />
-      <button id="manualFeedBtn">Feed</button>
-    </div>
-    <div id="cameraDebugInfo">
-      <span id="cameraFps">—</span> ·
-      <span id="cameraInference">—</span> ·
-      <span id="cameraDetCount">—</span>
+    <div id="cameraSection">
+      <div class="camera-stage">
+        <video id="cameraVideo" autoplay muted playsinline></video>
+        <canvas id="overlayCanvas"></canvas>
+      </div>
+      <div id="cameraDebugInfo">
+        <span id="cameraFps">—</span> ·
+        <span id="cameraInference">—</span> ·
+        <span id="cameraDetCount">—</span>
+      </div>
     </div>
   </div>
 

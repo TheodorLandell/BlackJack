@@ -1199,3 +1199,40 @@ Git-repo initierades lokalt i projektmappen, en `.gitignore` skapades som exklud
 
 ### Repo-URL
 https://github.com/TheodorLandell/BlackJack
+
+---
+
+## Prompt #11 — Kamera-panel UX-polish (collapse/expand, auto-start) — 2026-05-08
+
+### Prompt
+Sista finputsning av kamera-panelens UX. I digital mode visas bara mode-toggleln. Kamera-sektionen rullar ner mjukt när man togglar till camera mode, kameran startar automatiskt, och panelen breddas. Togglar man tillbaka stängs kameran av direkt och sektionen collapsar. Manuell feed-input och Start/Stop-knappen togs bort.
+
+### Vad som skapades / ändrades
+
+Filer ändrade:
+- `frontend/index.html` — ny struktur: `#cameraSection` wrapper runt `.camera-stage` + `#cameraDebugInfo`; `#cameraControls` (Start/Stop-knapp) borttagen; `#manualFeedSection` borttagen; `#modeToggle` fick `<span class="mode-toggle-label">Mode:</span>`; knapp-text kortad till "Digital"
+- `frontend/style.css` — `#cameraControls`, `#cameraToggle`, `#manualFeedSection`, `#manualFeedInput`, `#manualFeedBtn`-stilar borttagna; `#cameraPanel` bredd 220px + `transition: width 280ms`; ny `#cameraPanel.camera-mode` (360px); ny `#cameraSection` (max-height: 0, opacity: 0, overflow hidden, transitions); ny `#cameraPanel.camera-mode #cameraSection` (max-height: 320px, opacity 1, margin-top 8px); `.mode-toggle-label`-stil tillagd
+- `frontend/js/api.js` — `applyModeUI` togglar nu `camera-mode`-klass på `#cameraPanel`, anropar `window.startCamera`/`window.stopCamera`; manuell feed-hanterare borttagen; knapp-text ändrad till "Digital"/"Camera"
+- `frontend/js/camera.js` — `toggleBtn`-konstant borttagen; `toggleBtn.textContent`-rader borttagna; click-event listener borttagen; `window.startCamera = startCamera` och `window.stopCamera = stopCamera` exponerade
+
+### Sammanfattning av implementationen
+`#cameraSection` wrappar kamera-video och debug-info. CSS-transition på `max-height` (0 → 320px) och `opacity` (0 → 1) ger en mjuk collapse/expand-animation på 280ms respektive 220ms. `#cameraPanel` breddas från 220px till 360px via `width`-transition. `stopCamera()` anropas FÖRE klass-borttagning vid toggle till digital, vilket gör att webbläsarens kamera-indikator släcks omedelbart. `startCamera()` anropas via `window.startCamera` direkt efter att `.camera-mode`-klassen lagts till.
+
+### Beslut och avvägningar
+`margin-top` ingår i `#cameraSection`-transitionens property-lista (0 → 8px) så att spacing smidigt animeras parallellt med collapse/expand. Exponering via `window.startCamera/stopCamera` behåller camera.js självständigt — ingen modul-import behövs. Manuell feed-input togs bort helt (inga fallbacks som kommenterad kod) eftersom auto-feed anses tillräckligt pålitlig.
+
+### Problem som uppstod
+Inga.
+
+### Status
+✅ Klart
+
+### Hur du testar
+
+1. Ladda om sidan → endast "Mode: Digital"-toggle synlig uppe till vänster, inget kamerafönster
+2. Klicka toggle → panelen breddas mjukt (220 → 360px), kamerasektionen rullar ner, kameran startar automatiskt (browser-indikator tänds)
+3. Spela en rond i camera mode normalt — fungerar identiskt som tidigare
+4. Klicka toggle tillbaka → kameran stängs av direkt (browser-indikatorn släcks), sektionen collapsar mjukt, panelen smalnar
+5. Verifiera att webcam-permission-indikatorn faktiskt släcks (inte bara döljs) vid toggle till digital
+
+Appen är nu klar enligt huvudspecifikationerna.
