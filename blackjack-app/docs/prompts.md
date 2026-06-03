@@ -108,65 +108,7 @@ Implementera spellogiken steg för steg — lämplig ordning vore: kortlek (deck
 
 ---
 
-## Prompt #2 — Kortlek: Card och Deck + test-endpoint — 2026-05-05
 
-### Prompt
-Nu ska du implementera kortleken för blackjack-appen. Detta är steg 2.
-Bygg ENDAST det som beskrivs nedan — ingen handvärdering, ingen dealer-logik,
-inget spelflöde, ingen frontend-uppdatering. Bara kortleken och en enkel
-test-endpoint.
-
-VAD SOM SKA IMPLEMENTERAS:
-
-1. backend/game/deck.py — Card och Deck-klasser
-2. backend/app.py — GET /api/deck/test endpoint
-3. frontend/index.html + js/api.js — temporär testknapp
-
-### Vad som skapades / ändrades
-
-Filer skapade: inga
-
-Filer ändrade:
-- blackjack-app/backend/game/deck.py
-- blackjack-app/backend/app.py
-- blackjack-app/frontend/index.html
-- blackjack-app/frontend/js/api.js
-
-Beroenden tillagda: inga
-
-### Sammanfattning av implementationen
-Klassen Card skapades med attributen rank och suit samt metoderna to_code(), from_code() och __repr__. from_code() använder rsplit("-", 1) för att hantera "10-h" korrekt utan att splitta på fel ställe. Klassen Deck bygger en 52-kortlek via en list comprehension över alla fyra färger och tretton valörer, med metoderna shuffle(), draw() och cards_left(). En ny Flask-endpoint GET /api/deck/test lades till i app.py som skapar, blandar och drar 5 kort och returnerar JSON. I frontenden lades en temporär testknapp och ett resultat-div till, med fetch-logik i api.js kopplad till knappen.
-
-### Beslut och avvägningar
-rsplit("-", 1) valdes istället för split("-") i from_code() för att "10-h" annars skulle splittas fel (3 delar istället för 2). draw() tar bort kortet från slutet av listan (pop()) vilket är O(1) och effektivare än att ta från början. Testkod markerades tydligt med kommentarer i både HTML och JS för enkel borttagning senare.
-
-### Problem som uppstod
-Inga problem uppstod.
-
-### Status
-✅ Klart
-
-Klart. Här är sammanfattningen:
-
-Filer ändrade (4 st)
-
-backend/game/deck.py — implementerad från scratch med Card och Deck
-backend/app.py — ny endpoint GET /api/deck/test tillagd
-frontend/index.html — temporär testknapp + #deckResult
-frontend/js/api.js — fetch-logik kopplad till testknappen
-Hur du testar
-
-Starta backenden: cd backend → python app.py
-Öppna frontend/index.html i webbläsaren
-Klicka "Testa kortlek" — du ska se 5 kortskoder (t.ex. k-h, 2-r, 10-s, a-k, 7-h) och Kvar i leken: 47
-Du kan även testa direkt i webbläsaren: http://localhost:5000/api/deck/test
-Beslut som inte stod i prompten
-
-rsplit("-", 1) användes i from_code() istället för split("-") — annars tolkas "10-h" som tre delar (["10", "h"] funkar, men split på "10-h" ger bara 2 delar ändå... egentligen är det "10" + "-" + "h" som är problemet om man splittar på fel separator). Valet är en säkerhetsåtgärd för framtida robusthet. draw() plockar från slutet av listan (pop()) vilket är O(1).
-
-Nästa logiska steg (inget görs förrän du säger till)
-
----
 
 ## Prompt #3 — Handvärdering: Hand-klass + test-endpoint — 2026-05-05
 
@@ -1235,4 +1177,19 @@ Inga.
 4. Klicka toggle tillbaka → kameran stängs av direkt (browser-indikatorn släcks), sektionen collapsar mjukt, panelen smalnar
 5. Verifiera att webcam-permission-indikatorn faktiskt släcks (inte bara döljs) vid toggle till digital
 
+Appen är nu klar enligt huvudspecifikationerna.
+Klart och pushat.
+
+Filer ändrade:
+
+index.html — ny #cameraSection-wrapper, #cameraControls och #manualFeedSection borttagna, "Mode:"-label tillagd
+style.css — #cameraPanel 220px → 360px med transition, #cameraSection collapse/expand via max-height + opacity, gamla knappstilar borttagna
+api.js — applyModeUI togglar camera-mode-klass, anropar window.startCamera/stopCamera, manuell feed borttagen
+camera.js — toggleBtn borttagen, window.startCamera/stopCamera exponerade
+Hur du testar:
+
+Ladda om → bara "Mode: Digital" syns uppe till vänster
+Klicka toggle → panelen breddas mjukt (220→360px), kameran startar automatiskt
+Spela en rond normalt — identiskt som tidigare
+Klicka toggle tillbaka → kameran stängs av direkt (browser-indikatorn släcks), panel collapsar mjukt
 Appen är nu klar enligt huvudspecifikationerna.

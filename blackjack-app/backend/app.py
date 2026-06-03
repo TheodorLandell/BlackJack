@@ -15,7 +15,7 @@ CORS(app)  # Tillåt anrop från frontenden
 
 # Global spelrond och spelarens saldo — sparas i serverminnet
 current_round: GameRound | None = None
-player_saldo: int = 1000
+player_saldo: int = 10000
 DEFAULT_BET: int = 50
 
 
